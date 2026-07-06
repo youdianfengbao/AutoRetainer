@@ -33,7 +33,7 @@ public class DeployablesTab : NeoUIEntry
         .Checkbox($"重新派遣前完成所有舰船", () => ref C.FinalizeBeforeResend)
         .Checkbox($"在远航探索UI中隐藏飞空艇", () => ref C.HideAirships)
 
-        .Section("Plans")
+        .Section("计划")
         .Widget(SubmarineUnlockPlanUI.DrawButtonText, x =>
         {
             SubmarineUnlockPlanUI.DrawButton();
@@ -89,14 +89,14 @@ public class DeployablesTab : NeoUIEntry
         .Widget(MassConfigurationChangeWidget)
         .Section("注册、部件和计划自动化")
         .Widget(AutomatedSubPlannerWidget)
-        .Section("Export character and submarine list to CSV")
+        .Section("导出角色和潜水艇列表到CSV")
         .Widget(() =>
         {
-            ImGuiEx.FilteringCheckbox("Export only characters enabled for multi mode (otherwise - all)", out var exportEnabledCharas);
-            ImGuiEx.FilteringCheckbox("Export only enabled submarines (otherwise - all)", out var exportEnabledSubs);
-            if(ImGuiEx.IconButtonWithText(FontAwesomeIcon.FileExport, "Export"))
+            ImGuiEx.FilteringCheckbox("仅导出启用了多角色模式的角色（否则-全部）", out var exportEnabledCharas);
+            ImGuiEx.FilteringCheckbox("仅导出已启用的潜水艇（否则-全部）", out var exportEnabledSubs);
+            if(ImGuiEx.IconButtonWithText(FontAwesomeIcon.FileExport, "导出"))
             {
-                string[] headers = ["Name", "Build (1)", "Build (2)", "Build (3)", "Build (4)", "Level (1)", "Level (2)", "Level (3)", "Level (4)", "Route (1)", "Route (2)", "Route (3)", "Route (4)"];
+                string[] headers = ["名称", "配置 (1)", "配置 (2)", "配置 (3)", "配置 (4)", "等级 (1)", "等级 (2)", "等级 (3)", "等级 (4)", "航线 (1)", "航线 (2)", "航线 (3)", "航线 (4)"];
                 List<string[]> data = [];
                 foreach(var x in C.OfflineData)
                 {
@@ -141,7 +141,7 @@ public class DeployablesTab : NeoUIEntry
                         name = $"{name}.csv";
                     }
                     Utils.WriteCsv(name, headers, data);
-                }, title: "Save as...", fileTypes: [("Comma-separated values", ["csv"])], save:true);
+                }, title: "另存为...", fileTypes: [("逗号分隔值文件", ["csv"])], save:true);
             }
         });
     }
@@ -255,7 +255,7 @@ public class DeployablesTab : NeoUIEntry
                     num++;
                 }
             }
-            Notify.Success($"Affected {num} submarines");
+            Notify.Success($"已影响 {num} 艘潜水艇");
         }
 
         ImGui.Separator();

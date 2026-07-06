@@ -7,39 +7,39 @@ using System.Threading.Tasks;
 namespace AutoRetainer.UI.NeoUI.InventoryManagementEntries.GCDeliveryEntries;
 public sealed unsafe class GeneralSettings : InventoryManagementBase
 {
-    public override string Name { get; } = "Grand Company Delivery/General Settings";
+    public override string Name { get; } = "军票交纳/通用设置";
 
     public override NuiBuilder Builder => new NuiBuilder()
-        .Section("General Settings")
-        .Checkbox("Enable Expert Delivery continuation", () => ref C.AutoGCContinuation)
+        .Section("通用设置")
+        .Checkbox("启用精英交纳续行", () => ref C.AutoGCContinuation)
         .TextWrapped($"""
-            When Expert Delivery Continuation is enabled:
-            - The plugin will automatically spend available Grand Company Seals to purchase items from the configured Exchange List.
-            - If the Exchange List is empty, only Ventures will be purchased.
-            - Make sure that "Delivery Mode" is not set to "Disabled" in "Character Configuration" section
+            启用精英交纳续行后：
+            - 插件将自动消耗可用军票，从配置的兑换列表中购买物品。
+            - 如果兑换列表为空，则仅购买探险币。
+            - 请确保在"角色设置"部分中"交纳模式"未设为"禁用"
 
-            After seals have been spent:
-            - Expert Delivery will resume automatically.
-            - The process will repeat until there are no eligible items left to deliver or no seals remaining.
+            军票消耗完毕后：
+            - 精英交纳将自动恢复。
+            - 此过程将重复，直到没有符合条件的物品可交纳或军票用尽。
             """)
 
-        .Section("Multi Mode Expert Delivery")
+        .Section("多角色精英交纳")
         .TextWrapped($"""
-        When enabled:
-        - Characters with teleportation enabled will automatically deliver items for expert delivery and buy items according to exchange plan, if their rank is sufficient, during multi mode.
+        启用后：
+        - 启用传送的角色将在多角色模式下自动进行精英交纳和按兑换计划购买物品（如果军衔足够）。
         """)
-        .Checkbox("Enable Multi Mode Expert Delivery", () => ref C.FullAutoGCDelivery)
-        .Checkbox("Only when workstation is not locked", () => ref C.FullAutoGCDeliveryOnlyWsUnlocked)
-        .InputInt(150f, "Inventory slots remaining to trigger delivery, less or equal", () => ref C.FullAutoGCDeliveryInventory, "Only primary inventory is accounted for, not armory")
-        .Checkbox("Trigger on venture exhaustion", () => ref C.FullAutoGCDeliveryDeliverOnVentureExhaust, "This may cause situation where you will just go to GC exchange every login. Make sure you have a purchase plan to buy enough ventures set. ")
+        .Checkbox("启用多角色精英交纳", () => ref C.FullAutoGCDelivery)
+        .Checkbox("仅在未锁定时", () => ref C.FullAutoGCDeliveryOnlyWsUnlocked)
+        .InputInt(150f, "背包剩余格子数小于等于时触发交纳", () => ref C.FullAutoGCDeliveryInventory, "仅计算主背包，不计算兵装库")
+        .Checkbox("探险币耗尽时触发", () => ref C.FullAutoGCDeliveryDeliverOnVentureExhaust, "这可能导致每次登录时都前往军队兑换。请确保已设置购买足够探险币的计划。")
         .Indent()
-        .InputInt(150f, "Ventures remaining to trigger delivery, less or equal", () => ref C.FullAutoGCDeliveryDeliverOnVentureLessThan)
+        .InputInt(150f, "探险币剩余数量小于等于时触发交纳", () => ref C.FullAutoGCDeliveryDeliverOnVentureLessThan)
         .Unindent()
-        .Checkbox("Use Priority seal allowance, if possible", () => ref C.FullAutoGCDeliveryUseBuffItem)
-        .Checkbox("Use Free Company seal buff, if possible", () => ref C.FullAutoGCDeliveryUseBuffFCAction)
-        .Checkbox("Teleport back to house/inn after delivery", () => ref C.TeleportAfterGCExchange)
+        .Checkbox("尽可能使用定额军票优待", () => ref C.FullAutoGCDeliveryUseBuffItem)
+        .Checkbox("尽可能使用部队军票效果", () => ref C.FullAutoGCDeliveryUseBuffFCAction)
+        .Checkbox("交纳后传送回房屋/旅馆", () => ref C.TeleportAfterGCExchange)
         .Indent()
-        .Checkbox("Only when Multi Mode is active", () => ref C.TeleportAfterGCExchangeMulti)
+        .Checkbox("仅在多角色模式激活时", () => ref C.TeleportAfterGCExchangeMulti)
         .Unindent()
         ;
 }

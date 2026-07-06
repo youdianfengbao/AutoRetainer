@@ -17,6 +17,6 @@ public class LoginOverlay : NeoUIEntry
                 if(ImGuiEx.SliderFloat(x, ref C.LoginOverlayBPadding.ValidateRange(0.5f, 5f), 1f, 1.5f)) P.LoginOverlay.bWidth = 0;
             })
         .Checkbox("搜索时显示隐藏角色", () => ref C.LoginOverlayAllSearch)
-        .SliderInt(150f, "Number of columns", () => ref C.NumLoginOverlayCols.ValidateRange(1, 10), 1, 10)
-        .SliderFloat(150f, "Overlay height, %", () => ref C.LoginOverlayPercent.ValidateRange(20f, 100f), 20f, 100f);
+        .SliderInt(150f, "列数", () => ref C.NumLoginOverlayCols.ValidateRange(1, 10), 1, 10)
+        .SliderFloat(150f, "覆盖层高度, %", () => ref C.LoginOverlayPercent.ValidateRange(20f, 100f), 20f, 100f);
 }

@@ -14,7 +14,7 @@ public class MultiModeDeployables : NeoUIEntry
         .Unindent()
         .DragInt(60f, "提前登录阈值（秒）", () => ref C.MultiModeWorkshopConfiguration.AdvanceTimer.ValidateRange(0, 300), 0.1f, 0, 300, "AutoRetainer应在该角色上的潜艇/飞空艇准备好重新派遣前提前登录的秒数。")
         .DragInt(120f, "雇员任务处理截止时间（分钟）", () => ref C.DisableRetainerVesselReturn.ValidateRange(0, 60), "如果设置大于0的值，AutoRetainer将在此分钟数前停止处理任何雇员任务（考虑所有先前设置），以防任何角色重新部署潜艇/飞空艇。")
-        .Checkbox("Sell items from Unconditional sell list right after deployment (requires retainers)", () => ref C.VendorItemAfterVoyage)
+        .Checkbox("部署后立即出售无条件出售列表中的物品（需要雇员）", () => ref C.VendorItemAfterVoyage)
         .Checkbox("进入工坊时定期检查部队箱金币", () => ref C.FCChestGilCheck, "进入工坊时定期检查部队箱，以保持金币计数器更新。")
         .Indent()
         .SliderInt(150f, "检查频率（小时）", () => ref C.FCChestGilCheckCd, 0, 24 * 5)
@@ -23,34 +23,34 @@ public class MultiModeDeployables : NeoUIEntry
             if(ImGuiEx.Button(x, C.FCChestGilCheckTimes.Count > 0)) C.FCChestGilCheckTimes.Clear();
         })
         .Unindent()
-        .Checkbox("Shutdown the game after all deployables have been processed", () => ref C.ShutdownOnSubExhaustion)
+        .Checkbox("所有远航探索处理完毕后关闭游戏", () => ref C.ShutdownOnSubExhaustion)
         .Indent()
-        .SliderFloat(150f, "Don't shutdown if there are deployables that return within this amount of hours", () => ref C.HoursForShutdown, 0f, 10f)
+        .SliderFloat(150f, "如果远航探索在此小时内返回则不关闭游戏", () => ref C.HoursForShutdown, 0f, 10f)
         .Widget(() =>
         {
             ImGuiEx.HelpMarker($"""
-                Currently: {(Utils.CanShutdownForSubs() ? "Can shutdown" : "Can NOT shutdown")}
-                Remaining for force shutdown: {EzThrottler.GetRemainingTime("ForceShutdownForSubs")}
+                当前状态：{(Utils.CanShutdownForSubs() ? "可以关闭" : "无法关闭")}
+                强制关闭剩余时间：{EzThrottler.GetRemainingTime("ForceShutdownForSubs")}
                 """);
         })
         .Unindent()
-        .TextWrapped("Auto-buy Ceruleum Tanks after entering Workshop:")
+        .TextWrapped("进入工坊后自动购买青蓝燃料罐：")
         .Indent()
         .Widget(() =>
         {
             if(Data != null)
             {
-                ImGui.Checkbox($"Enable on {Data.NameWithWorldCensored}", ref Data.AutoFuelPurchase);
+                ImGui.Checkbox($"在 {Data.NameWithWorldCensored} 上启用", ref Data.AutoFuelPurchase);
             }
-            ImGuiEx.TextWrapped($"In order to enable/disable fuel purchase for other characters, navigate to Functions, Exclusions, Order section.");
+            ImGuiEx.TextWrapped($"要为其他角色启用/禁用燃料购买，请前往功能、排除、订单部分。");
         })
-        .InputInt(150f, "Tanks remaining to trigger purchase", () => ref C.AutoFuelPurchaseLow.ValidateRange(100, 99999))
-        .InputInt(150f, "Buy until this amount in inventory", () => ref C.AutoFuelPurchaseMax)
-        .Checkbox("Only buy when workstation is unlocked", () => ref C.AutoFuelPurchaseOnlyWsUnlocked)
+        .InputInt(150f, "剩余触发购买的燃料罐数量", () => ref C.AutoFuelPurchaseLow.ValidateRange(100, 99999))
+        .InputInt(150f, "购买至背包中达到此数量", () => ref C.AutoFuelPurchaseMax)
+        .Checkbox("仅在工作台解锁时购买", () => ref C.AutoFuelPurchaseOnlyWsUnlocked)
         .Unindent()
-        .Checkbox("Exit the game upon deployable completion", () => ref C.ExitOnSubCompletion, "Important: when activated, your multi mode will be set to do deployables only, no retainers.")
+        .Checkbox("远航探索完成后退出游戏", () => ref C.ExitOnSubCompletion, "重要：启用后，多角色模式将被设置为仅处理远航探索，不处理雇员。")
         .Indent()
-        .InputInt(150f, "Maximum time to wait for sub return, minutes", () => ref C.ExitOnSubCompletionTime)
+        .InputInt(150f, "等待潜艇返回的最长时间（分钟）", () => ref C.ExitOnSubCompletionTime)
         .Unindent()
         ;
 }

@@ -23,21 +23,21 @@ public class ExpertTab : NeoUIEntry
         .InputInt(150f, "AutoRetainer尝试解除卡死前的超时时间(秒)", () => ref C.BailoutTimeout)
 
         .Section("常规设置")
-        .Widget("Skip Inn Login Cutscene", text =>
+        .Widget("跳过旅馆登录动画", text =>
         {
             ImGui.SetNextItemWidth(200);
             if(ImGuiEx.EnumCombo(text, ref C.CutsceneSkipMode))
             {
                 S.InnCutsceneSkip.RefreshAccordingToConfig();
             }
-            ImGuiEx.HelpMarker("Cutscene skip is detectable server-side and increases chance of ban", EColor.RedBright, FontAwesomeIcon.ExclamationTriangle.ToIconString());
+            ImGuiEx.HelpMarker("跳过过场动画可在服务器端检测到，会增加封号风险", EColor.RedBright, FontAwesomeIcon.ExclamationTriangle.ToIconString());
         })
         .Checkbox($"禁用排序和折叠/展开功能", () => ref C.NoCurrentCharaOnTop)
         .Checkbox($"在插件UI栏显示多角色模式复选框", () => ref C.MultiModeUIBar)
         .SliderIntAsFloat(100f, "雇员菜单延迟(秒)", () => ref C.RetainerMenuDelay.ValidateRange(0, 2000), 0, 2000)
         .Checkbox($"允许派遣计时器显示负值", () => ref C.TimerAllowNegative)
         .Checkbox($"不检查派遣计划错误", () => ref C.NoErrorCheckPlanner2)
-        .Checkbox("Enable Manual relogs character postprocess", () => ref C.AllowManualPostprocess, "Allow manual command invocation while AutoRetainer locked in postprocess. ")
+        .Checkbox("启用手动重新登录角色后处理", () => ref C.AllowManualPostprocess, "允许在AutoRetainer锁定后处理期间手动调用命令。")
         .Widget("市场冷却状态覆盖", (x) =>
         {
             if(ImGui.Checkbox(x, ref C.MarketCooldownOverlay))
