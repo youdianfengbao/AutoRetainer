@@ -1,0 +1,97 @@
+name: Publish
+on:
+  push:
+    tags:
+      - '*-cn'
+  workflow_dispatch:
+    inputs:
+      force_release:
+        description: 'Force create release even if tag exists'
+        required: false
+        default: false
+        type: boolean
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+
+permissions:
+  contents: write
+
+jobs:
+  Build:
+    permissions:
+      contents: write
+    runs-on: windows-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v6
+        with:
+          submodules: true
+          fetch-depth: 0
+
+      - name: Get Environment Variables
+        run: |
+          $tag = "${{ github.ref }}" -replace 'refs/tags/', ''
+          $version = $tag -replace '-cn$', ''
+
+          "tag=$tag" | Out-File -Append -FilePath $Env:GITHUB_ENV
+          "version=$version" | Out-File -Append -FilePath $Env:GITHUB_ENV
+          Write-Host "tag: $tag"
+          Write-Host "version: $version"
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Download Dalamud Latest
+        run: |
+          Invoke-WebRequest -Uri https://raw.githubusercontent.com/ottercorp/dalamud-distrib/main/stg/latest.zip -OutFile latest.zip
+          Expand-Archive -Force latest.zip -DestinationPath "$env:AppData\XIVLauncher\addon\Hooks\dev"
+
+      - name: Build Plugin
+        run: dotnet build -c Release AutoRetainer/AutoRetainer.csproj -p:Version=${{ env.version }} -p:AssemblyVersion=${{ env.version }} -p:FileVersion=${{ env.version }} -p:PackageVersion=${{ env.version }} -p:InformationalVersion=${{ env.tag }}
+
+      - name: Package Release Asset
+        run: Compress-Archive -Force -Path AutoRetainer/bin/Release/* -DestinationPath latest.zip
+
+      - name: Generate Release Notes
+        shell: pwsh
+        run: |
+          $tag = "${{ env.tag }}"
+          $prev = git tag --list "*-cn" --sort=-creatordate | Where-Object { $_ -ne $tag } | Select-Object -First 1
+
+          if ($prev) {
+            $commits = git log "$prev..$tag" --pretty=format:"- %h %an: %s"
+          } else {
+            $commits = @()
+          }
+
+          if (-not $commits -or $commits.Count -eq 0) {
+            $commits = git log -n 10 --pretty=format:"- %h %an: %s"
+          }
+
+          $auto = @(
+            "## 自动构建说明",
+            "- 此版本由 GitHub Actions 自动构建发布。"
+          )
+
+          $changes = @("## 变更日志") + $commits
+
+          $body = $auto + "" + $changes
+          $body -join "`n" | Out-File -FilePath release_notes.md -Encoding UTF8
+
+          "release_body_path=$(Resolve-Path release_notes.md)" | Out-File -Append -FilePath $Env:GITHUB_ENV
+          Write-Host "Previous tag: $prev"
+          Write-Host "Release notes written to $(Resolve-Path release_notes.md)"
+
+      - name: Publish Plugin
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ env.tag }}
+          name: ${{ env.tag }}
+          files: latest.zip
+          body_path: ${{ env.release_body_path }}
+          generate_release_notes: false
+          draft: false
+          prerelease: false
