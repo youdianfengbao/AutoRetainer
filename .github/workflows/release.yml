@@ -29,6 +29,9 @@ jobs:
           submodules: recursive
           fetch-depth: 0
 
+      - name: Initialize Nested Submodules
+        run: git submodule update --init --recursive
+
       - name: Get Environment Variables
         run: |
           $tag = "${{ github.ref }}" -replace 'refs/tags/', ''
