@@ -11,24 +11,24 @@ public sealed unsafe class GeneralSettings : InventoryManagementBase
 
     public override NuiBuilder Builder => new NuiBuilder()
         .Section("通用设置")
-        .Checkbox("启用精英交纳续行", () => ref C.AutoGCContinuation)
+        .Checkbox("启用军票交纳续行", () => ref C.AutoGCContinuation)
         .TextWrapped($"""
-            启用精英交纳续行后：
+            启用军票交纳续行后：
             - 插件将自动消耗可用军票，从配置的兑换列表中购买物品。
             - 如果兑换列表为空，则仅购买探险币。
             - 请确保在"角色设置"部分中"交纳模式"未设为"禁用"
 
             军票消耗完毕后：
-            - 精英交纳将自动恢复。
+            - 军票交纳将自动恢复。
             - 此过程将重复，直到没有符合条件的物品可交纳或军票用尽。
             """)
 
-        .Section("多角色精英交纳")
+        .Section("多角色军票交纳")
         .TextWrapped($"""
         启用后：
-        - 启用传送的角色将在多角色模式下自动进行精英交纳和按兑换计划购买物品（如果军衔足够）。
+        - 启用传送的角色将在多角色模式下自动进行军票交纳和按兑换计划购买物品（如果军衔足够）。
         """)
-        .Checkbox("启用多角色精英交纳", () => ref C.FullAutoGCDelivery)
+        .Checkbox("启用多角色军票交纳", () => ref C.FullAutoGCDelivery)
         .Checkbox("仅在未锁定时", () => ref C.FullAutoGCDeliveryOnlyWsUnlocked)
         .InputInt(150f, "背包剩余格子数小于等于时触发交纳", () => ref C.FullAutoGCDeliveryInventory, "仅计算主背包，不计算兵装库")
         .Checkbox("探险币耗尽时触发", () => ref C.FullAutoGCDeliveryDeliverOnVentureExhaust, "这可能导致每次登录时都前往军队兑换。请确保已设置购买足够探险币的计划。")

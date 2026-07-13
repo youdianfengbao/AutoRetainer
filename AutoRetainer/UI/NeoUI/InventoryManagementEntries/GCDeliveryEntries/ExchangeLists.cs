@@ -23,7 +23,7 @@ public sealed unsafe class ExchangeLists : InventoryManagementBase
     {
         C.AdditionalGCExchangePlans.Where(x => x.GUID == Guid.Empty).Each(x => x.GUID = Guid.NewGuid());
         ImGuiEx.TextWrapped($"""
-            选择将在军队精英交纳操作期间自动购买的物品。
+            选择将在军队军票交纳操作期间自动购买的物品。
             购买逻辑：
             - 系统将尝试购买列表中第一个可用的物品。
             - 将继续购买直到该物品在背包中的数量达到指定的目标数量。
