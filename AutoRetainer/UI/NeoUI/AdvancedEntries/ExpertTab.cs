@@ -23,6 +23,7 @@ public class ExpertTab : NeoUIEntry
         .InputInt(150f, "AutoRetainer尝试解除卡死前的超时时间(秒)", () => ref C.BailoutTimeout)
 
         .Section("常规设置")
+        .Checkbox("允许操作无职业的雇员", () => ref C.AllowUnemployed)
         .Widget("跳过旅馆登录动画", text =>
         {
             ImGui.SetNextItemWidth(200);
