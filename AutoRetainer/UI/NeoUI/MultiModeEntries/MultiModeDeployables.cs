@@ -34,7 +34,7 @@ public class MultiModeDeployables : NeoUIEntry
                 """);
         })
         .Unindent()
-        .TextWrapped("进入工坊后自动购买青蓝燃料罐：")
+        .TextWrapped("进入工坊后自动购买桶装青磷水：")
         .Indent()
         .Widget(() =>
         {
@@ -44,7 +44,7 @@ public class MultiModeDeployables : NeoUIEntry
             }
             ImGuiEx.TextWrapped($"要为其他角色启用/禁用燃料购买，请前往功能、排除、订单部分。");
         })
-        .InputInt(150f, "剩余触发购买的燃料罐数量", () => ref C.AutoFuelPurchaseLow.ValidateRange(100, 99999))
+        .InputInt(150f, "剩余触发购买的桶装青磷水数量", () => ref C.AutoFuelPurchaseLow.ValidateRange(100, 99999))
         .InputInt(150f, "购买至背包中达到此数量", () => ref C.AutoFuelPurchaseMax)
         .Checkbox("仅在工作台解锁时购买", () => ref C.AutoFuelPurchaseOnlyWsUnlocked)
         .Unindent()
