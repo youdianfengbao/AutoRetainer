@@ -95,7 +95,7 @@ public static unsafe class InventoryCleanupCommon
                 catch(Exception e)
                 {
                     e.Log();
-                    Notify.Error(e.Message);
+                    Notify.Error($"导入失败：剪贴板内容不是有效的库存管理计划格式（{e.Message}）");
                 }
             }
             ImGuiEx.Tooltip("粘贴");

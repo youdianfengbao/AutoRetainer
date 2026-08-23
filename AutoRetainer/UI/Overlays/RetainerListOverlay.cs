@@ -112,7 +112,7 @@ internal unsafe class RetainerListOverlay : Window
                         }
                         else
                         {
-                            Notify.Error($"No entrust plan found for retainer {ret.Name}");
+                            Notify.Error($"未找到雇员 {ret.Name} 的委托计划");
                         }
 
                     }
@@ -155,7 +155,7 @@ internal unsafe class RetainerListOverlay : Window
                 }
                 ImGui.EndPopup();
             }
-            ImGuiEx.Tooltip("Run a specific entrust plan");
+            ImGuiEx.Tooltip("执行指定的委托计划");
 
             ImGui.SameLine();
             if(ImGuiEx.IconButton($"{FontAwesomeIcon.ArrowRightFromBracket.ToIconString()}##ReverseEntrust"))
@@ -192,7 +192,7 @@ internal unsafe class RetainerListOverlay : Window
                 }
                 ImGui.EndPopup();
             }
-            ImGuiEx.Tooltip("Reverse run a specific entrust plan (withdraw items according to entrust plan from retainers)");
+            ImGuiEx.Tooltip("反向执行指定的委托计划（根据委托计划从雇员处取出物品）");
 
             ImGui.SameLine();
             if(ImGuiEx.IconButton($"{Lang.IconGil}##WithdrawGil"))

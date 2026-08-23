@@ -133,7 +133,7 @@ internal unsafe class SubmarinePointPlanUI : Window
                         var plan = JsonConvert.DeserializeObject<SubmarinePointPlan>(Paste());
                         if(!plan.IsModified())
                         {
-                            Notify.Error("Could not import clipboard content. Is it correct plan?");
+                            Notify.Error("无法导入剪贴板内容。请确认是否为正确的计划格式。");
                         }
                         else
                         {

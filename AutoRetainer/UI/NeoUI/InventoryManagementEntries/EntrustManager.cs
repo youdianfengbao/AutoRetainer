@@ -71,7 +71,7 @@ public class EntrustManager : InventoryManagementBase
                 }
                 catch(Exception e)
                 {
-                    DuoLog.Error(e.Message);
+                    DuoLog.Error($"导入失败：剪贴板内容不是有效的委托计划格式（{e.Message}）");
                 }
             }
         });
